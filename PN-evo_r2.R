@@ -10,12 +10,11 @@ is.integer <- function(N) {
   !length(grep("[^[:digit:]]", as.character(N)))
 }
 
-empi <- c(3, 1, 4, 5, 7, 8, 9, 6, 2, 0)
 empidat <- read.csv("/home/pieper/MPIPZ/x-perimentz/QTL_analysis/Meta/figures/acchisto/accpntn.csv", 
   header = T)
 
 para <- 1
-nrep <- 2000
+nrep <- 11 
 save_every <-10 
 iter <- 1
 apply_selection <- 0  # 0 is without selection (extinction), 1 is with 
@@ -30,12 +29,13 @@ PN4 <- vector(mode = "numeric", length = nrep)
 PN0 <- vector(mode = "numeric", length = nrep)
 
 for (number in 1:nrep) {
-  print(paste("repetition ", number, " out of ", nrep/2, " for selection = ", 
-    apply_selection))
+# print(paste("repetition ", number, " out of ", nrep/2, " for selection = ", apply_selection))
   nlineages <- 1000  # number of lineages to model
   ancPN <- 3.72  # ancestral petal number. When the sum of qtl effects is added a value of 2 petals is obtained 
-  qtleffects <- c(-0.39, -0.75, 0.47, 0.63, -0.53, 0.54, -0.44, -0.51, 0.55, 
-    -0.44, -0.91, -0.44, 0.53, 0.92, -0.54)
+  qtleffects <- list(-0.386, c(-0.748, -0.438), 0.474, 0.626, c(-0.532, 0.490), c(0.538, 0.368), -0.442, -0.514, c(0.554, 0.464), 
+                     -0.436, -0.912, -0.444, 0.534, c(0.922, 0.654), -0.544)
+  qtlse <- list(0.054, c(0.050, 0.065), 0.061, 0.059, c(0.057, 0.070), c(0.052, 0.049), 0.050, 0.051, c(0.050, 0.070),
+                0.054, 0.063, 0.061, 0.065, c(0.048, 0.053), 0.067)
   p_mutate <- 7.5e-04  # probability to mutate
   select1 <- 75  # this number determines the rate of increase in selection strength with increasing petal numbers
   select2 <- 4.4  # this number determines at which petal number there is a 50% chance to go extinct 
