@@ -28,6 +28,10 @@ min_PN <- vector(mode = "numeric", length = nrep)
 PN4 <- vector(mode = "numeric", length = nrep)
 PN0 <- vector(mode = "numeric", length = nrep)
 
+calcP_ext <- function(x){
+  return( 1/(1 + (select1^-(-select2 + (ancPN + sum(qtlevolve[, x]))))) )
+}
+
 init <- function() {
   nlineages <<- 1000  # number of lineages to model
   ancPN <<- 3.72  # ancestral petal number. When the sum of qtl effects is added a value of 2 petals is obtained 
@@ -46,10 +50,6 @@ init <- function() {
   p_ext <<- rep(apply_selection, length(line_id))
   if (apply_selection == 1) { p_ext[1] <<- calcP_ext(1) } # calculate the probability to go extinct 
   panic <<- 0
-}
-
-calcP_ext <- function(x){
-  return( 1/(1 + (select1^-(-select2 + (ancPN + sum(qtlevolve[, x]))))) )
 }
 
 exteval <- function() {
@@ -75,7 +75,6 @@ is.integer <- function(N) {
 }
 
 for (number in 1:nrep) {
-  print(paste("repetition ", number, " out of ", nrep/2, " for selection = ", apply_selection))
   init()  
   while (sum(linelife) < nlineages) {
     for (k in subset(line_id, linelife == 1)) {
