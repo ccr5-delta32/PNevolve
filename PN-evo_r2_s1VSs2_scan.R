@@ -138,7 +138,7 @@ for (S2 in seq(3.3, 4.8, by=0.1)) {
   }
 }
 
-write.table(cbind(1:nrep/save_every, s_s1, s_s2, s_mu, s_se),
-  file = paste(outfile, ".mu.tbl", sep=""), append = TRUE, col.names = FALSE,
+write.table(cbind(1:(nrep/save_every), s_s1, s_s2, s_mu, s_se),
+  file = paste(outfile, ".mu.tbl", sep=""), col.names = FALSE,
   row.names = FALSE)
 
