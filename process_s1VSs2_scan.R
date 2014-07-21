@@ -41,14 +41,14 @@ for (x in 1:length(indices[,1])) {
     lines(xs1, predict(s1fit, list(S1 = seq(min(S1), max(S1), by=1))), col=colo)
     legend(130, magicnumber-((x-1)*(magicnumber/length(indices[,1]))), legend=paste("select2=",indices[x,1], sep=""),
            bty="n", pch=1, cex=0.65, pt.cex=0.5, col=colo)
-    legend(50,0.1,  legend="Empirical pop. mean", pch=NA, lty=2, lwd=2, col="blue", bty="n", cex=0.65)
+    legend(60,0.1,  legend="Empirical pop. mean", pch=NA, lty=2, lwd=2, col="blue", bty="n", cex=0.65)
     screen(2)
     plot(S2, s2res, las=1, cex=0.5, ylim=ylim, col=colo, ylab="Population mean petal number", xlab="Parameter 'select2'")
     abline(h=2.01, lwd=1.5, lty=2, col="blue")
     lines(xs2, predict(s2fit, list(S2 = seq(min(S2), max(S2), by=0.01))), col=colo)
     legend(4.54, magicnumber-((x-1)*(magicnumber/length(indices[,1]))), legend=paste("select1=",indices[x,2], sep=""),
            bty="n", pch=1, cex=0.65, pt.cex=0.5, col=colo)
-    legend(3.8,0.1,  legend="Empirical pop. mean", pch=NA, lty=2, lwd=2, col="blue", bty="n", cex=0.65)
+    legend(3.9,0.1,  legend="Empirical pop. mean", pch=NA, lty=2, lwd=2, col="blue", bty="n", cex=0.65)
   } else {
     screen(1, new=F)
     par(new=T)
