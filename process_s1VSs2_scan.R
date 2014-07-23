@@ -1,8 +1,28 @@
-# parBjorn Pieper. MPIPZ, parCologne, Germany. Make pretty graphs of s1VSs2 scan results
+# Bjorn Pieper. MPIPZ, parCologne, Germany. Make pretty graphs of s1VSs2 scan results
 
 setwd("/home/bpuser/server/home/cluster/PN_evolve/run2_")
+scanmu1 <- read.table("run2_v1_s2VSs1_bis_.tbl", header=F)
 
-scanmu <- read.table("run2_v1_s2VSs1.mu.tbl", nrows=256, header=F)
+## !!! uglyness alert !! ##
+sc_V1 <- vector(mode="numeric", length=256)
+sc_V2 <- vector(mode="numeric", length=256)
+sc_V3 <- vector(mode="numeric", length=256)
+sc_V4 <- vector(mode="numeric", length=256)
+sc_V5 <- vector(mode="numeric", length=256)
+
+scanmu <- cbind(sc_V1,sc_V2,sc_V3,sc_V4,sc_V5)
+facepalm <- 1
+
+for (x in unique(scanmu1[,2])){
+  for (y in unique(scanmu1[,3])){
+    scanmu[facepalm,1] <- facepalm
+    scanmu[facepalm,2] <- mean(subset(scanmu1[,2], scanmu1[,2] == x))
+    scanmu[facepalm,3] <- mean(subset(scanmu1[,3], scanmu1[,3] == y))
+    scanmu[facepalm,4] <- mean(subset(scanmu1[,4], scanmu1[,2] == x & scanmu1[,3] == y))
+    scanmu[facepalm,5] <- sd(subset(scanmu1[,4], scanmu1[,2] == x & scanmu1[,3] == y))/sqrt(length(subset(scanmu1[,4], scanmu1[,2] == x & scanmu1[,3] == y)))
+    facepalm <- facepalm + 1
+  }
+}
 
 xs1 <- seq(min(scanmu[,2]), max(scanmu[,2]), by=1)
 xs2 <- seq(min(scanmu[,3]), max(scanmu[,3]), by=0.01)
@@ -85,7 +105,10 @@ optiS1 <- function (par_a, par_b, par_c, des_mu) {
   
   while(difference > accuracy) {
     panic <- panic + 1
-    if (panic > 5000) { print(paste("No solution found after", panic,"iterations")) }
+    if (panic > 5000) { 
+      print(paste("No solution found after", panic,"iterations"))
+      break
+    }
     
     p3 <- (par_a / P3) + (par_b + (log(P3, par_c)))
 
@@ -111,3 +134,37 @@ optiS1(-5.543990,1.775331,22366.393320,2.01)  #S2=4.5 / S1=40.8433
 optiS1(-5.691476,1.858643,30332.379944,2.01)  #S2=4.6 / S1=31.2449
 optiS1(-5.655510,1.893765,15796.529697,2.01)  #S2=4.7 / S1=25.7382
 optiS1(-5.567027,2.028000,151665.267555,2.01)  #S2=4.8 / S1=20.5214
+
+optiS1(-5.100110,1.454555,2315.848835,2.01)  #S2=4.1 / no solution
+optiS1(-5.000568,1.392303,1023.960948,2.01)  #S2=4.2 / S1=106.98
+optiS1(-5.381430,1.635917,3876.356114,2.01)  #S2=4.4 / S1=51.85
+optiS1(-5.987016,1.956779,739289.039894,2.01)  #S2=4.6 / S1=30.12
+optiS1(-5.813721,2.014233,84122.015062,2.01)  #S2=4.8 / S1=21.24"
+
+optiS2 <- function(Int, slope, des_mu){
+  result <- (des_mu - Int) / slope
+  print(paste("The value of S2 that yields a population mu of", des_mu,"for the given S1 is:"))
+  sprintf("%.16f",result)
+}
+
+mu_slope <- mean(c(0.6644838, 0.6310142, 0.66799, 0.6669765, 0.6631121, 0.6730596, 
+  0.681241, 0.6890853, 0.6679688, 0.6718914, 0.6749862, 0.6921401, 0.7292495, 
+  0.696658, 0.7078331, 0.5599476)) 
+
+optiS2(-0.7504174,mu_slope,2.01)   #S1=155 / S2=4.1132585854176558
+optiS2(-0.6066983,mu_slope,2.01)   #S1=145 / S2=3.8991048049192796
+optiS2(-0.7665029,mu_slope,2.01)   #S1=135 / S2=4.1372273594790476
+optiS2(-0.7710887,mu_slope,2.01)   #S1=125 / S2=4.1440605946343574
+optiS2(-0.7735217,mu_slope,2.01)   #S1=115 / S2=4.1476859732232336
+optiS2(-0.8261185,mu_slope,2.01)   #S1=105 / S2=4.2260597145152188
+optiS2(-0.8772383,mu_slope,2.01)   #S1=95 / S2=4.3022325991792680
+optiS2(-0.9259099,mu_slope,2.01)   #S1=85 / S2=4.3747574559512952
+optiS2(-0.8672866,mu_slope,2.01)   #S1=75 / S2=4.2874037129881790
+optiS2(-0.9171223,mu_slope,2.01)   #S1=65 / S2=4.3616631785622255
+optiS2(-0.9627440,mu_slope,2.01)   #S1=55 / S2=4.4296434228565662
+optiS2(-1.0748491,mu_slope,2.01)   #S1=45 / S2=4.5966896329855507
+optiS2(-1.2889550,mu_slope,2.01)   #S1=35 / S2=4.9157257799695451
+optiS2(-1.2670780,mu_slope,2.01)   #S1=25 / S2=4.4.8831271743843230
+optiS2(-1.5240412,mu_slope,2.01)   #S1=15 / S2=5.2660243726617990
+optiS2(-1.7038122,mu_slope,2.01)   #S1=5 / S2=5.5338985750049359
+
